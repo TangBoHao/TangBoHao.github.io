@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Spring笔记 | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#spring中的一些基本概念 IOC： 控制反转 达到松耦合的目的BeanAOP:面向切面 允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring笔记">
+<meta property="og:url" content="http://yoursite.com/2018/05/09/springsomething/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="#spring中的一些基本概念 IOC： 控制反转 达到松耦合的目的BeanAOP:面向切面 允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-09T09:28:32.353Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring笔记">
+<meta name="twitter:description" content="#spring中的一些基本概念 IOC： 控制反转 达到松耦合的目的BeanAOP:面向切面 允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-springsomething" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/09/springsomething/" class="article-date">
+  <time datetime="2018-05-09T08:48:58.000Z" itemprop="datePublished">2018-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#spring中的一些基本概念</p>
+<p>IOC： 控制反转 达到松耦合的目的<br>Bean<br>AOP:面向切面 允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发</p>
+<a id="more"></a>
+<p>包含并管理应用对象的配置和生命周期，是一个容器<br>将简单的组件配置、组合为复杂的应用，是一个框架</p>
+<p>##spring作用：<br>容器<br>提供了对多种技术的支持（JMS、MQ支持、UnitTest等）<br>AOP（事务管理、日志等）<br>提供了众多方便应用的辅助类（JDBC Template等）<br>对主流应用框架提供了良好的支持</p>
+<p>##适用范围：</p>
+<blockquote>
+<ul>
+<li>构建企业应用</li>
+<li>单独使用bean容器</li>
+<li>单独使用AOP进行切面处理</li>
+<li>其他spring功能，如：对消息的支持等</li>
+<li>在互联网中的应用</li>
+</ul>
+</blockquote>
+<p>##IOC：</p>
+<p>###接口及面向接口编程：<br>接口即声明，声明了哪些方法是对外公开提供的<br>java8中，接口也可以有方法体<br>结构设计中，分清层次及调用关系，每层只向外（上层）提供一组功能接口，各层间依赖接口而非实现类。<br>接口的变动不影响各层间的调用。<br>“面向接口编程”中的接口是用于隐藏具体实现和实现多态性的组件。</p>
+<p>###IOC概念：<br>控制反转，控制权的转移，应用程序本身不负责依赖对象的创建和维护，而是由外部容器负责创建和维护。DI（依赖注入）是其一种实现方式。<br>目的：创建对象并且组装对象之间的关系。<br>控制被反转之后，获得对象的过程由自身管理变为了由IOC容器主动注入。</p>
+<p>##Spring的Bean配置：<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"oneInterface"</span> <span class="attr">class</span>=<span class="string">"com.ioc.interfaces.OneInterfaceImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>获取Bean的方式：示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OneInterface oonebean=usuper.getBean(<span class="string">"oneInterface"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>###Bean的初始化</p>
+<p>####基础：两个包<br>-org.springframework.beans<br>-org.springframework.comtext<br>-BeanFactory提供配置结构和基本功能，加载并初始化Bean<br>-ApplicationContext保存了Bean对象并在Spring中被广泛使用</p>
+<p>####方式：ApplicationContext<br>-加载本地文件<br>    示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileSystemXmlApplicationContext context=<span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"D:/worksapce/appcontext.xml"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>-Classpath（相对路径）</p>
+<p>示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileSystemXmlApplicationContext context=<span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"classpath:spring-context.xml"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>-web应用中依赖servlet或listener<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderLister<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>context<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.context.ContextLoaderServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>####Spring的常用注入方式:<br>Spring注入是指在启动Spring容器加载bean配置的时候，完成对变量的赋值行为。<br>常见的两种注入方式：<br>-设值注入<br>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;xml</span><br><span class="line">	&lt;bean id=&quot;injectionService&quot; class=&quot;com.ioc.interfaces.InjectionServiceImpl&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;injectionDAO&quot; ref=&quot;injectionDAO&quot;&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line">	&lt;bean id=injectionDAO&quot; class=&quot;com.ioc.injection.dao.InjectionDAOImpl&quot;&gt;&lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure></p>
+<p>-构造注入<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"injectionService"</span> <span class="attr">class</span>=<span class="string">"com.ioc.interfaces.InjectionServiceImpl"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"injectionDAO"</span> <span class="attr">ref</span>=<span class="string">"injectionDAO"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">injectionDAO</span>" <span class="attr">class</span>=<span class="string">"com.ioc.injection.dao.InjectionDAOImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/09/springsomething/" data-id="cjgywgvgb0002p0u3o20c07m1" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/03/protochain/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript原型链示例</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/09/springsomething/">Spring笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/protochain/">JavaScript原型链示例</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/02/php-oop/">php面向对象知识点</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
