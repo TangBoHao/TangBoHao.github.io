@@ -79,7 +79,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/09/spring-bean/">spring-bean</a>
+      <a class="article-title" href="/2018/05/09/spring-bean/">spring中的bean</a>
     </h1>
   
 
@@ -87,38 +87,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#spring中的一些基本概念</p>
-<p>IOC： 控制反转 达到松耦合的目的<br>Bean<br>AOP:面向切面 允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发</p>
-<p>包含并管理应用对象的配置和生命周期，是一个容器<br>将简单的组件配置、组合为复杂的应用，是一个框架</p>
-<p>##spring作用：<br>容器<br>提供了对多种技术的支持（JMS、MQ支持、UnitTest等）<br>AOP（事务管理、日志等）<br>提供了众多方便应用的辅助类（JDBC Template等）<br>对主流应用框架提供了良好的支持</p>
-<p>##适用范围：</p>
+        <p>##Bean的配置项：</p>
 <blockquote>
 <ul>
-<li>构建企业应用</li>
-<li>单独使用bean容器</li>
-<li>单独使用AOP进行切面处理</li>
-<li>其他spring功能，如：对消息的支持等</li>
-<li>在互联网中的应用</li>
+<li>Id 唯一标识</li>
+<li>Class 要实例化的类</li>
+<li>Scope 范围 作用域</li>
+<li>Constructor arguments 构造器参数</li>
+<li>Properties 属性</li>
+<li>Autowiring mode 自动装配的模式</li>
+<li>lazy-initialization mode 懒加载模式</li>
+<li>Initialization/destruction method 初始化和销毁的方法</li>
 </ul>
 </blockquote>
-<p>##IOC：</p>
-<p>###接口及面向接口编程：<br>接口即声明，声明了哪些方法是对外公开提供的<br>java8中，接口也可以有方法体<br>结构设计中，分清层次及调用关系，每层只向外（上层）提供一组功能接口，各层间依赖接口而非实现类。<br>接口的变动不影响各层间的调用。<br>“面向接口编程”中的接口是用于隐藏具体实现和实现多态性的组件。</p>
-<p>###IOC概念：<br>控制反转，控制权的转移，应用程序本身不负责依赖对象的创建和维护，而是由外部容器负责创建和维护。DI（依赖注入）是其一种实现方式。<br>目的：创建对象并且组装对象之间的关系。<br>控制被反转之后，获得对象的过程由自身管理变为了由IOC容器主动注入。</p>
-<p>##Spring的Bean配置：<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"oneInterface"</span> <span class="attr">class</span>=<span class="string">"com.ioc.interfaces.OneInterfaceImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>获取Bean的方式：示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OneInterface oonebean=usuper.getBean(<span class="string">"oneInterface"</span>)</span><br></pre></td></tr></table></figure></p>
-<p>###Bean的初始化</p>
-<p>####基础：两个包<br>-org.springframework.beans<br>-org.springframework.comtext<br>-BeanFactory提供配置结构和基本功能，加载并初始化Bean<br>-ApplicationContext保存了Bean对象并在Spring中被广泛使用</p>
-<p>####方式：ApplicationContext<br>-加载本地文件<br>    示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileSystemXmlApplicationContext context=<span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"D:/worksapce/appcontext.xml"</span>)</span><br></pre></td></tr></table></figure></p>
-<p>-Classpath（相对路径）</p>
-<p>示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileSystemXmlApplicationContext context=<span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"classpath:spring-context.xml"</span>)</span><br></pre></td></tr></table></figure></p>
-<p>-web应用中依赖servlet或listener<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderLister<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>context<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.context.ContextLoaderServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>####Spring的常用注入方式:<br>Spring注入是指在启动Spring容器加载bean配置的时候，完成对变量的赋值行为。<br>常见的两种注入方式：<br>-设值注入<br>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;beans&gt;xml</span><br><span class="line">	&lt;bean id=&quot;injectionService&quot; class=&quot;com.ioc.interfaces.InjectionServiceImpl&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;injectionDAO&quot; ref=&quot;injectionDAO&quot;&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line">	&lt;bean id=injectionDAO&quot; class=&quot;com.ioc.injection.dao.InjectionDAOImpl&quot;&gt;&lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure></p>
-<p>-构造注入<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"injectionService"</span> <span class="attr">class</span>=<span class="string">"com.ioc.interfaces.InjectionServiceImpl"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"injectionDAO"</span> <span class="attr">ref</span>=<span class="string">"injectionDAO"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">injectionDAO</span>" <span class="attr">class</span>=<span class="string">"com.ioc.injection.dao.InjectionDAOImpl"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-
+        
+          <p class="article-more-link">
+            <a href="/2018/05/09/spring-bean/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjgyy64qx000084u396o1gl7l" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjgyykgsk0000r0u396vbrtb6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -160,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/springsomething/" data-id="cjgyy64r7000384u3gamajyey" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/springsomething/" data-id="cjgyyi2860002aku36pgq8rwd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -201,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/03/protochain/" data-id="cjgyy64r4000284u3ajv9pe43" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/03/protochain/" data-id="cjgyyi2830001aku3i3fu5up5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -242,7 +232,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/02/php-oop/" data-id="cjgyy64r2000184u3d7pyniut" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/02/php-oop/" data-id="cjgyyi27y0000aku32gtnah7s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -283,7 +273,7 @@
       <ul>
         
           <li>
-            <a href="/2018/05/09/spring-bean/">spring-bean</a>
+            <a href="/2018/05/09/spring-bean/">spring中的bean</a>
           </li>
         
           <li>
