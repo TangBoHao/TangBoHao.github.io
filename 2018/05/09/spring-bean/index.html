@@ -7,17 +7,17 @@
   
   <title>spring中的bean | Tang的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##Bean的配置项：   Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
+  <meta name="description" content="##Bean的配置项：  Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring中的bean">
 <meta property="og:url" content="http://yoursite.com/2018/05/09/spring-bean/index.html">
 <meta property="og:site_name" content="Tang的个人博客">
-<meta property="og:description" content="##Bean的配置项：   Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
+<meta property="og:description" content="##Bean的配置项：  Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-09T10:25:38.570Z">
+<meta property="og:updated_time" content="2018-05-09T12:42:03.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring中的bean">
-<meta name="twitter:description" content="##Bean的配置项：   Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
+<meta name="twitter:description" content="##Bean的配置项：  Id 唯一标识 Class 要实例化的类 Scope 范围 作用域 Constructor arguments 构造器参数 Properties 属性 Autowiring mode 自动装配的模式 lazy-initialization mode 懒加载模式 Initialization/destruction method 初始化和销毁的方法">
   
     <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
   
@@ -87,7 +87,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>##Bean的配置项：</p>
-<blockquote>
 <ul>
 <li>Id 唯一标识</li>
 <li>Class 要实例化的类</li>
@@ -98,10 +97,8 @@
 <li>lazy-initialization mode 懒加载模式</li>
 <li>Initialization/destruction method 初始化和销毁的方法</li>
 </ul>
-</blockquote>
 <a id="more"></a>
 <p>##Bean的作用域</p>
-<blockquote>
 <ul>
 <li>singleton：单例。每一个Bean容器中只存在一份</li>
 <li>prototype：每次使用创建新的实例，destroy方法不生效。</li>
@@ -109,57 +106,40 @@
 <li>session：同时，每次http请求创建。当前session有效。</li>
 <li>global session：基于porlet的web有效（porlet定义了global session），如果在web中，同session。</li>
 </ul>
-</blockquote>
 <p>##Bean的生命周期</p>
 <p>###初始化：</p>
-<blockquote>
 <ul>
-<li>实现org.springframework.beans.factory.InitializingBean接口，覆盖afterPropertiesSet方法</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>配置init-method<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"exampleInitBean"</span> <span class="attr">class</span>=<span class="string">"examples.ExampleBean"</span> <span class="attr">init-method</span>=<span class="string">"init"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<li><p>实现org.springframework.beans.factory.InitializingBean接口，覆盖afterPropertiesSet方法</p>
+</li>
+<li><p>配置init-method</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"exampleInitBean"</span> <span class="attr">class</span>=<span class="string">"examples.ExampleBean"</span> <span class="attr">init-method</span>=<span class="string">"init"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</blockquote>
 <p>###销毁:</p>
-<blockquote>
 <ul>
-<li>实现org.springframework.beans.factory.DisposableBean接口，覆盖destory方法</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>配置init-method<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"exampleInitBean"</span> <span class="attr">class</span>=<span class="string">"examples.ExampleBean"</span> <span class="attr">destroy-method</span>=<span class="string">"cleanup"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<li><p>实现org.springframework.beans.factory.DisposableBean接口，覆盖destory方法</p>
+</li>
+<li><p>配置init-method</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"exampleInitBean"</span> <span class="attr">class</span>=<span class="string">"examples.ExampleBean"</span> <span class="attr">destroy-method</span>=<span class="string">"cleanup"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以上都是针对某个Bean的初始化和销毁<br>配置全局默认初始化、销毁方法：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">default-init-method</span>=<span class="string">"init"</span> <span class="attr">default-destory-method</span>=<span class="string">"destroy"</span>&gt;</span><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>以上都是针对某个Bean的初始化和销毁<br>配置全局默认初始化、销毁方法：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">default-init-method</span>=<span class="string">"init"</span> <span class="attr">default-destory-method</span>=<span class="string">"destroy"</span>&gt;</span><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</blockquote>
 <p>同时定义的时候，方法的执行顺序：实现接口 先于 配置方式（全局默认的方法不生效）</p>
 <p>###资源接口<br>Spring中提供了一些以Aware结尾的接口，实现了Aware接口的bean在初始化之后，可以获得相应资源。<br>通过Aware接口，可以对Spring相应资源进行操作。<br>为对Spring进行简单的扩展提供了方便的入口。<br>例：</p>
-<blockquote>
 <ul>
 <li>ApplicationContextAware：</li>
 <li>BeanNameAware:</li>
 </ul>
-</blockquote>
 <p>###Bean的自动装配:</p>
-<blockquote>
 <ul>
 <li>NO ：不做任何操作</li>
 <li>byname：根据属性名进行自动装配。此选项检查容器并根据名字查找 与属性完全一致的bean，并将其与属性自动装配。</li>
 <li>byType：如果容器中存在一个与指定属性类型相同的bean，那么将与该属性自动装配。如果存在多个该类型的bean，那么抛出异常，并指出不能使用byType方式进行自动装配。如果没有找到相匹配的bean，则什么也不发生。</li>
 <li>Construtor：与byType类似，不同在于他应用于构造器参数。如果容器中没有找到与构造器参数类型一致的bean，那么抛出异常。</li>
 </ul>
-</blockquote>
 <p>###Resources&amp;ResourceLoader</p>
-<blockquote>
 <ul>
 <li>Resources:针对资源文件的统一接口</li>
 <li>UrlResource：url对应的资源，根据一个URL地址即可构建。</li>
@@ -169,22 +149,19 @@
 <li>InputStreamResource:针对输入流封装的资源。</li>
 <li>ByteArrayResource:针对字节数组封装的资源。</li>
 </ul>
-</blockquote>
 <p>###ResourceLoader:<br>接口定义：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ResourceLoader</span></span>&#123;</span><br><span class="line">	<span class="function">Resource <span class="title">getResource</span><span class="params">(String location)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>参数前缀：</p>
-<blockquote>
 <ul>
 <li>classpath：从classpath加载</li>
 <li>file：从文件系统加载</li>
 <li>http：从url加载</li>
 <li>（none）：依赖于ApplicationContext</li>
 </ul>
-</blockquote>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjgz32s5u0001uku3wfom3pon" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjgz3g0zg0002lku3ambd74j0" class="article-share-link">Share</a>
       
       
     </footer>
