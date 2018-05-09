@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>spring-AOP | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##AOP概念及实现方式概念：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。 主要的功能是：  日志记录 性能统计 安全控制 事务处理 异常处理等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring-AOP">
+<meta property="og:url" content="http://yoursite.com/2018/05/09/spring-AOP/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="##AOP概念及实现方式概念：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。 主要的功能是：  日志记录 性能统计 安全控制 事务处理 异常处理等">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-09T12:31:49.189Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring-AOP">
+<meta name="twitter:description" content="##AOP概念及实现方式概念：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。 主要的功能是：  日志记录 性能统计 安全控制 事务处理 异常处理等">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-spring-AOP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/05/09/spring-AOP/" class="article-date">
+  <time datetime="2018-05-09T10:32:13.000Z" itemprop="datePublished">2018-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      spring-AOP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##AOP概念及实现方式<br>概念：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。</p>
+<p>主要的功能是：</p>
+<ul>
+<li>日志记录</li>
+<li>性能统计</li>
+<li>安全控制</li>
+<li>事务处理</li>
+<li>异常处理等<a id="more"></a>
+</li>
+</ul>
+<p>实现方式：<br>预编译：<br>-AspectJ<br>运行期动态代理（JDK动态代理、CGLib动态代理）<br>-SpringAOP、JbossAOP</p>
+<p>###AOP中几个相关的概念</p>
+<ul>
+<li>切面：一个关注点的模块化，这个关注点可能回横切多个对象</li>
+<li>连接点：程序执行过程中某个特定的点</li>
+<li>通知：在切面的某个特定的连接点上执行的动作</li>
+<li>切入点：匹配连接点的断言，在AOP中通知和一个切入点的表达式关联。</li>
+<li>引入：在不修改类代码的前提下，为类添加新的方法和属性。</li>
+<li>目标对象：被一个或多个切面所通知的对象。</li>
+<li>AOP代理；AOP框架创建的对象，用来实现切面契约(包括通知方法执行等功能)。</li>
+<li>织入：把切面连接到其他的应用程序类型或对象上，并创建一个被通知的对象，分为：编译时织入、类加载时织入、执行时织入。</li>
+</ul>
+<p>###Advice(通知)的类型：</p>
+<ul>
+<li>前置通知：在连接点之前执行的通知，但不能组织连接点前的执行（除非它抛出一个异常）。</li>
+<li>返回后通知：在连接点正常完成后执行的通知。</li>
+<li>抛出异常后通知：在方法抛出异常退出时执行的通知。</li>
+<li>后通知：当连接带你退出的时候执行的通知（不论是正常返回还是异常退出）。</li>
+<li>环绕通知：包围一个连接点的通知。</li>
+</ul>
+<p>###Spring中的AOP<br>用途：<br>提供了声明式的企业服务，特别是EJB的替代服务的声明。<br>允许用户定制自己的方面，以完成OOP与AOP的互补使用。</p>
+<p>SPring中AOP的实现：</p>
+<ul>
+<li>纯java实现，无需特殊的编译过程，不需要控制类加载器的层次。</li>
+<li>目前只支持方法执行连接点（通知Spring Bean的方法执行）。</li>
+<li>不是为了提供最完整的AOP实现，而是侧重于提供一种AOP实现和Spring IoC容器之间的正和，用于帮助解决企业应用中常见的问题。</li>
+<li>Spring AOP不会与AspectJ竞争，从而提供综合全面的AOP解决方案。</li>
+</ul>
+<p>###有接口和无接口的Spring AOP实现区别</p>
+<ul>
+<li>Spring AOP默认使用标准的JavaSE动态代理作为AOP代理，这使得任何接口（或者接口集）都可以被代理</li>
+<li>Spring AOP中也可以使用CGLIB代理（如果一个业务对象并没有实现一个接口）。</li>
+</ul>
+<p>###Schema-based AOP<br>Spring所有的切面和通知器都必须放在一个<a href="aop:config" target="_blank" rel="noopener">aop:config</a>内（可以配置包含多个<a href="aop:config" target="_blank" rel="noopener">aop:config</a>元素），每一个<a href="aop:config" target="_blank" rel="noopener">aop:config</a>可以包含pointcut,advisor和aspect元素。（它们必须按照这个顺序进行声明）<br><a href="apo:config" target="_blank" rel="noopener">apo:config</a>风格的配置大量使用了Spring的自动代理机制。<br>示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"myaspect"</span> <span class="attr">ref</span>=<span class="string">"aBean"</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"aBean"</span> <span class="attr">class</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>把这个bean作为这个切面来配置</p>
+<p>###Pointcut //切入点</p>
+<ul>
+<li>execution(public**(..))    切入点为执行所有public方法时</li>
+<li>execution(<em>set</em>(..))        切入点为执行所有set开始的方法时</li>
+<li>execution(<em>com.xyz.service.AccountService.</em>(..))    切入点为执行AccountService类中的所有方法时</li>
+<li>execution(*com.xyz.service..(..))    切入点为执行com.xyz.service包下的所有方法时</li>
+<li>execution(*com.xyz.service…(..))    切入点为执行com.xyz.service包及其子包下的所有方法时</li>
+<li><p>target(com.xyz.service.AccountService)        target用于匹配当前目标对象类型的执行方法</p>
+</li>
+<li><p>args(java.io.Serializable)<br>@target(org.springframework.transaction.annotation.Transaction)<br>@within(org.springframework.transaction.annotation.Transaction)<br>@annotation(org.springframework.transaction.annotation.Transaction)<br>等等</p>
+<blockquote>
+<p>args用于匹配当前执行的方法传入的参数为指定类型的执行方法</p>
+</blockquote>
+</li>
+</ul>
+<p>声明示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"myaspect"</span> <span class="attr">ref</span>=<span class="string">"aBean"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"businessService"</span> <span class="attr">expression</span>=<span class="string">"execution(* com.xyz.myapp.service..(..))"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>###advice 通知<br>before advice:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"beforeExample"</span> <span class="attr">ref</span>=<span class="string">"aBean"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">pointcut-ref</span>=<span class="string">"dataAccessOperation"</span> <span class="attr">method</span>=<span class="string">"doAccessCheck"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"beforeExample"</span> <span class="attr">ref</span>=<span class="string">"aBean"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">pointcut</span>=<span class="string">"execution(* com.xyz.myapp.dao..(..))"</span> <span class="attr">method</span>=<span class="string">"doAccessCheck"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/05/09/spring-AOP/" data-id="cjgz32s5u0003uku3wcky55n4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/09/spring-bean/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">spring中的bean</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/09/spring-AOP/">spring-AOP</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/09/spring-bean/">spring中的bean</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/09/springsomething/">Spring笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/protochain/">JavaScript原型链示例</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/02/php-oop/">php面向对象知识点</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
