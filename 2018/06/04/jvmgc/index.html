@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JVM中的GC | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##GC概念Garbage Collection 垃圾收集GC的对象是堆空间和永久区">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM中的GC">
+<meta property="og:url" content="http://yoursite.com/2018/06/04/jvmgc/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="##GC概念Garbage Collection 垃圾收集GC的对象是堆空间和永久区">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-03T17:14:32.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM中的GC">
+<meta name="twitter:description" content="##GC概念Garbage Collection 垃圾收集GC的对象是堆空间和永久区">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-jvmgc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/04/jvmgc/" class="article-date">
+  <time datetime="2018-06-03T17:02:18.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM中的GC
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##GC概念<br>Garbage Collection 垃圾收集<br>GC的对象是堆空间和永久区</p>
+<a id="more"></a>
+<p>##GC算法</p>
+<p>####引用计数法</p>
+<p>通过引用计算来回收垃圾。对于一个对象A，只要有任何一个对象引用了A，则A的引用计数器加一，当引用失效时，引用计数器减一。只要对象A的引用计数器的值为0，则对象A就不可能再被使用。</p>
+<p>注：没有使用这种算法</p>
+<p>存在的问题：</p>
+<ul>
+<li>引用和去引用伴随加法和减法，影响性能。</li>
+<li>很难处理垃圾对象的循环引用</li>
+</ul>
+<p>####标记清除法</p>
+<p>标记-清除算法时现代垃圾回收算法的思想基础。将垃圾回收分为两个阶段：标记阶段和清除阶段。一种实现：在标记阶段，首先通过根节点，标记所有从根节点开始的可达对象。因此，未被标记的对象就是未被引用的垃圾对象。然后，在清除阶段，清除所有未被标记的对象。</p>
+<p>####标记压缩法<br>标记-压缩法适合用于存活对象较多的场合，如老年代。它在标记-清除法的基础上做了一些优化。和标记清除法一样，它也是先从根节点开始，对所有可达对象做一次标记，但之后，它并不简单的清理未标记的对象，而是将所有的存活对象压缩到内存的一端，之后，清理边界外的所有的空间。</p>
+<p>####复制算法</p>
+<p>复制算法是一种相对高效的回收方法。不适用于存活对象较多的场合，如老年代。用于新生代。将所有的内存空间分为两块，每次只使用其中一块，在垃圾回收的时候，将正在使用的内存中存活对象复制dao未使用的内存块中，之后，清除正在使用的内存块中的所有对象，交换两个内存的角色，完成垃圾回收。</p>
+<p>问题：空间浪费 整合标记清理思想 减少复制空间的大小 （将老年代和大对象放到另外的空间。</p>
+<p>##分代思想<br>根据对象的存活周期进行分类，短命的对象归为新生代，长命的对象归为老年代。<br>根据不同代的特点，选取合适的垃圾收集算法：</p>
+<ul>
+<li>少量对象存活，适合复制算法</li>
+<li>大量对象存活，适合标记清理或者标记压缩</li>
+</ul>
+<p>##可触及性<br>所有的算法，需要能够识别一个垃圾对象，因此需要给出一个可触及性的定义。<br>可触及的：从根节点可以触及这个对象<br>可复活的：一旦所有的引用都被释放，就是可复活的对象，因为在finalize()中可能复活该对象。<br>不可触及的：在finalize()后，可能会进入不可触及的状态。不可触及的对象不可复活。可以回收。</p>
+<p>注：对象的finalize()方法只会调用一次。且优先级低，何时被调用不确定，所以不推荐使用。可以使用try-catch-finally来替代他。</p>
+<p>根的概念：</p>
+<ul>
+<li>栈中引用的对象</li>
+<li>方法区中静态成员或者常量引用的对象（全局对象）</li>
+<li>JNI方法栈中引用的对象</li>
+</ul>
+<p>###Stop-The_world</p>
+<ul>
+<li>Java中一种全局暂停的现象</li>
+<li>全局停顿，所有Java代码停止，native代码可以执行，但是不能和JVM交互</li>
+<li><p>多半是由于GC引起的</p>
+<ul>
+<li>Dump线程</li>
+<li>死锁检查</li>
+<li>堆Dump</li>
+</ul>
+<p>GC产生全局停顿的原因：垃圾不断产生<br>应对：当GC线程工作的时候 其他所有的线程都停下来</p>
+</li>
+</ul>
+<p>##GC的参数</p>
+<p>####堆的回顾<br>eden    s0    s1    tenured<br>新生代    复制区    老年代</p>
+<p>####串行收集器</p>
+<ul>
+<li>最古老，最稳定</li>
+<li>效率高</li>
+<li>可能产生较长时间的停顿</li>
+<li><p>-XX+UseSerialGC</p>
+<ul>
+<li>新生代、老年代使用串行回收</li>
+<li>新生代复制算法</li>
+<li>老年代标记-压缩</li>
+</ul>
+<p>注：GC线程执行时，应用程序线程暂停</p>
+</li>
+</ul>
+<p>####并行收集器</p>
+<p>1.ParNew收集器</p>
+<ul>
+<li><p>-XX:UseParNewGC</p>
+<ul>
+<li>新生代并行</li>
+<li>老年代串行</li>
+</ul>
+</li>
+<li><p>Serial收集器新生代的并行版本<br>-复制算法<br>-多线程，需要多核支持</p>
+</li>
+<li>-XX:ParallelGCThreads 限制线程数量</li>
+</ul>
+<p>2.Parallel收集器</p>
+<ul>
+<li>类似ParNew</li>
+<li>新生代复制算法</li>
+<li>老年代 标记压缩</li>
+<li>更加关注吞吐量</li>
+<li>-XX:+UseParallelGC<br>使用Parallel收集器+老年代串行</li>
+<li>-XX:UseParallelOldGC<br>使用parallel收集器+并行老年代</li>
+</ul>
+<p>####CMS收集器</p>
+<ul>
+<li>Concurrent Mark Sweep 并发标记清除  //与用户线程一起执行</li>
+<li>标记-清除算法</li>
+<li>并发阶段会降低吞吐量</li>
+<li>老年代收集器（新生代主要用ParNew）</li>
+<li>-XX:+UseConcMarkSweepGC</li>
+</ul>
+<p>运行过程比较复杂，着重实现了标记的过程，可分为</p>
+<ul>
+<li><p>初始标记</p>
+<ul>
+<li>根可以直接关联到的对象</li>
+<li>速度块</li>
+</ul>
+</li>
+<li><p>并发标记（和用户线程一起</p>
+<ul>
+<li>主要标记过程，标记全部对象</li>
+</ul>
+</li>
+<li><p>重新标记</p>
+<ul>
+<li>由于并发标记时，用户线程依然运行，因此在正式清理前，再做修正</li>
+</ul>
+</li>
+<li><p>并发清除（和用户线程一起<br>-基于标记结果，清理对象</p>
+</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>尽可能的降低停顿</li>
+<li>会影响系统整体吞吐量和性能 //在GC阶段，会分出一部分cpu去做GC</li>
+<li>清理不彻底  //因为在清理阶段，用户线程还在运行，会产生新的垃圾，无法清理</li>
+<li>因为和用户线程一起运行，不能再空间快满的时候再清理 //若预留空间不够，可以使用串行收集器作为后备</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/04/jvmgc/" data-id="cjhz3anzy0005uku3ls4ecide" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/04/jvmgainian1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JVM的基本原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/04/jianbiaojiejue/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hibernate不能自动建表的解决方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/04/classzhuangzai/">JVM中的类装载器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/neicun/">JVM内存模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jvmgainian1/">JVM的基本原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jvmgc/">JVM中的GC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jianbiaojiejue/">hibernate不能自动建表的解决方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

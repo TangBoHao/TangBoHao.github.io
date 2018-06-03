@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JVM中的类装载器 | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#JVM类装载器 ##class装载验证流程  加载 装载类的第一个阶段 取得类的二进制流 转为方法区数据结构 在Java堆中生成对应的java.lang.Class对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM中的类装载器">
+<meta property="og:url" content="http://yoursite.com/2018/06/04/classzhuangzai/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="#JVM类装载器 ##class装载验证流程  加载 装载类的第一个阶段 取得类的二进制流 转为方法区数据结构 在Java堆中生成对应的java.lang.Class对象">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-03T17:17:27.739Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM中的类装载器">
+<meta name="twitter:description" content="#JVM类装载器 ##class装载验证流程  加载 装载类的第一个阶段 取得类的二进制流 转为方法区数据结构 在Java堆中生成对应的java.lang.Class对象">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-classzhuangzai" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/04/classzhuangzai/" class="article-date">
+  <time datetime="2018-06-03T17:16:35.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM中的类装载器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#JVM类装载器</p>
+<p>##class装载验证流程</p>
+<ul>
+<li>加载<ul>
+<li>装载类的第一个阶段</li>
+<li>取得类的二进制流</li>
+<li>转为方法区数据结构</li>
+<li>在Java堆中生成对应的java.lang.Class对象<a id="more"></a></li>
+</ul>
+</li>
+<li>链接<ul>
+<li>验证</li>
+<li>目的：保证Class格式流是正确的<ul>
+<li>文件格式的验证</li>
+<li>是否以0xCAFEBABE开头</li>
+<li>版本号是否合理</li>
+<li>元数据验证</li>
+<li>是否有父类</li>
+<li>是否继承了final类</li>
+<li>非抽象类实现了所有的抽象方法</li>
+<li>字节码验证（很复杂）</li>
+<li>运行检查</li>
+<li>栈数据类型和操作码数据参数温和</li>
+<li>跳转指令指定到合理的位置</li>
+<li>符号引用验证</li>
+<li>常量池中描述类是否存在</li>
+<li>访问的方法或者字段是否存在且有足够的权限</li>
+</ul>
+</li>
+<li>准备</li>
+<li>分配内存，并为类设置初始值（方法区中）<ul>
+<li>public static int v=1</li>
+<li>在准备阶段中，v会被设置为0</li>
+<li>在初始化的<clinit>中才会被设置为1</clinit></li>
+<li>对于static final类型，在准备阶段就会被赋上正确的值</li>
+</ul>
+</li>
+<li>解析</li>
+<li>符号引用替换为直接引用（指针或地址偏移量 引用对象一定在内存中）</li>
+</ul>
+</li>
+<li>初始化<ul>
+<li>执行类构造器<clinit></clinit></li>
+<li>static变量 赋值语句</li>
+<li>static()语句</li>
+<li>子类的<clinit>调用前保证父类的<clinit>被调用</clinit></clinit></li>
+<li><clinit>是线程安全的</clinit></li>
+</ul>
+</li>
+</ul>
+<p>##类加载器ClassLoader</p>
+<ul>
+<li>ClassLoader是一个抽象类<ul>
+<li>重要方法：</li>
+<li>public loadClass 载入并返回一个类</li>
+<li>protected final Class 定义一个类 不公开调用</li>
+<li>protected Class&lt;?&gt; findClass     loadClass回调该方法，自定义ClassLoader的推荐做法</li>
+<li>protected final Class&lt;?&gt; findLoadedClass 寻找已经加载的类  </li>
+</ul>
+</li>
+<li>ClassLoader的实例讲读入Java字节码将类装载到JVM中</li>
+<li>ClassLoader可以定制，满足不同的字节码流获取方式</li>
+<li>ClassLoader负责类装载过程中的加载阶段</li>
+</ul>
+<p>##JDK中ClassLoader</p>
+<ul>
+<li>Bootstrap ClassLoader      rt.jar/-Xbootclasspath</li>
+<li>Extension ClassLoader    %JAVA_HOME%/lib/ext/*.jar</li>
+<li>App ClassLoader            Classpath下</li>
+<li><p>Custom ClassLoader</p>
+<p>注：协同工作，自底向上检查类是否加载，自顶向下尝试加载类</p>
+</li>
+</ul>
+<p>##打破常规模式</p>
+<ul>
+<li><p>Thread.setContextClassLoader()   //可以突破双亲模式的局限</p>
+<ul>
+<li>上下文加载器</li>
+<li>是一个角色</li>
+<li>用以解决顶层ClassLoader无法访问底层ClassLoader的类的问题</li>
+<li>基本思想是，在顶层的ClassLoader.传入底层ClassLoader的实例</li>
+</ul>
+<p>-双亲模式的破坏</p>
+<ul>
+<li>双亲模式是默认的模式，但是不是必须这么做</li>
+<li>Tomcat的WebappClassLoader就会先加载自己的Class，找不到在委托parent</li>
+<li>OSGI的ClassLoader形成网状结构，根据需要自由加载Class</li>
+</ul>
+</li>
+</ul>
+<p>##热替换</p>
+<p>含义：当一个class被替换后，系统无需重启，替换的类立即生效</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/04/classzhuangzai/" data-id="cjhz3anz80000uku3ogfnz7q9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/04/neicun/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JVM内存模型</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/04/classzhuangzai/">JVM中的类装载器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/neicun/">JVM内存模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jvmgainian1/">JVM的基本原理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jvmgc/">JVM中的GC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jianbiaojiejue/">hibernate不能自动建表的解决方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
