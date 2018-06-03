@@ -90,44 +90,16 @@
         <p>##hibernate不能自动建表的解决办法</p>
 <p>hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因：</p>
 <p>1.</p>
-<p>####数据库的方言和数据库的版本不匹配<br>MySQL数据库的方言有以下几种方言：<br>兼容性模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
-<p>需要注意的是5.5一下版本可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLInnoDBDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
-<p>Mysql数据库版本是5.5的，设置事务性方言时要修改，就是加一个5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;dialect&quot;&gt;org.hibernate.dialect.MySQL5InnoDBDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
-<p>2.</p>
-<p>####表的字段设置有问题<br>如果数据表的字段不符合规范，比如使用了关键字、重复定义等，就会导致无法创建数据表。</p>
-<p>3.</p>
-<p>####主键的类型或者生成方式配置有问题<br>主键的类型，实体类中对应主键的属性，都应该是int型。在generator标签中的class属性，也要注意。<br>我设置成native不能自动建表，设置成increment就可以了。</p>
-<p>生成主键的参数有以下几种：</p>
-<ul>
-<li><p>assigned<br>　　主键由外部程序负责生成，无需Hibernate参与。</p>
-</li>
-<li><p>hilo<br>　　通过hi/lo 算法实现的主键生成机制，需要额外的数据库表保存主键生成历史状态。</p>
-</li>
-<li><p>seqhilo<br>　　与hilo 类似，通过hi/lo 算法实现的主键生成机制，只是主键历史状态保存在Sequence中，适用于支持Sequence的数据库，如Oracle。</p>
-</li>
-<li><p>increment<br>　　主键按数值顺序递增。此方式的实现机制为在当前应用实例中维持一个变量，以保存着当前的最大值，之后每次需要生成主键的时候将此值加1作为主键。这种方式可能产生的问题是：如果当前有多个实例访问同一个数据库，那么由于各个实例各自维护主键状态，不同实例可能生成同样的主键，从而造成主键重复异常。因此，如果同一数据库有多个实例访问，此方式必须避免使用。</p>
-</li>
-<li><p>identity<br>　　采用数据库提供的主键生成机制。如DB2、SQL Server、MySQL中的主键生成机制。</p>
-</li>
-<li><p>sequence<br>　　采用数据库提供的sequence 机制生成主键。如Oralce 中的Sequence。</p>
-</li>
-<li><p>native</p>
-</li>
-</ul>
-<p>　　由Hibernate根据底层数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式。</p>
-<ul>
-<li><p>uuid.hex<br>　　由Hibernate基于128 位唯一值产生算法生成16 进制数值（编码后以长度32 的字符串表示）作为主键。</p>
-</li>
-<li><p>uuid.string<br>　　与uuid.hex 类似，只是生成的主键未进行编码（长度16）。在某些数据库中可能出现问题（如PostgreSQL）。</p>
-</li>
-<li><p>foreign<br>　　使用外部表的字段作为主键。一般而言，利用uuid.hex方式生成主键将提供最好的性能和数据库平台适应性。</p>
-</li>
-</ul>
-
+<p>####数据库的方言和数据库的版本不匹配<br>MySQL数据库的方言有以下几种方言：<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/04/jianbiaojiejue/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cjhz2ekgs0003h8u3lrptj4a9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cjhz2jobo0006a0u3ccnaoy9o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -171,22 +143,16 @@
 <li>默认值和name属性值一样</li>
 </ul>
 </li>
-<li>property标签type属性，设置生成表的字段的类型</li>
-</ol>
-<p>##hibernate核心配置文件</p>
-<ol>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;hibernate-configuration&gt;</span><br><span class="line">	&lt;session-factory&gt;</span><br><span class="line">		配置内容写在这里</span><br><span class="line">	&lt;/session-factory&gt;</span><br><span class="line">&lt;/hibernate-configuration&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>数据库部分必须，hibernate部分可选，映射文件必须</p>
-</li>
-<li><p>核心配置文件名称和位置是固定的。src下面，名称为hibernate.cfg.xml.</p>
-</li>
-</ol>
-
+<li>property标签type属性，设置生成表的字段的类型
+        
+          <p class="article-more-link">
+            <a href="/2018/06/04/hbnpeizhi/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/hbnpeizhi/" data-id="cjhz2ekgi0001h8u34rqqfvuw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/hbnpeizhi/" data-id="cjhz2job30001a0u3r8o1jcvw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -221,69 +187,16 @@
         <p>#hibernate入门概念</p>
 <p>###javaEE三层：<br>1、web层<br>2、service层<br>3、dao层（对数据库进行crud操作）</p>
 <p>hibernate：持久层框架、orm框架</p>
-<p>orm：对象关系映射<br>1.<br>让实体类和数据库表进行一一对应<br>让实体类属性和表里面的字段对应<br>2.不需要直接操作数据库，直接操作实体类对象</p>
-<p>###建立映射方法<br>1.hibernate要求实体类有一个属性是唯一的<br>2.使用hibernate的时候，可以不用手动创建表，hibernate会自动创建表。<br>3.配置实体类和数据库表的映射关系。使用配置文件实现。</p>
-<ul>
-<li>创建xml格式的配置文件<br>映射配置文件名称和位置没有固定要求，建议：在实体类所在的包里面创建，名称-实体类名称.hbm.xml</li>
-<li>配置是xml戈斯和，在配置文件中首先要引入xml约束。在里面引入dtd约束。</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC </span></span><br><span class="line"><span class="meta">    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</span></span><br><span class="line"><span class="meta">    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>配置映射关系</li>
-</ul>
-<ol>
-<li>配置类和表对应<br>class标签<br>name属性：实体类全路径<br>table属性：数据库表名称</li>
-<li>配置实体类id和表id对应<br>id标签<br>name属性：实体类里面id属性名称<br>column属性：表字段名称（主键）<br>在标签内设置数据库id增长策略 generator class=”native” 生成表的id值就是主键自动增长</li>
-<li>配置其他属性和表字段对应<br>property标签<br>示例：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"com.User"</span> <span class="attr">table</span>=<span class="string">"t_User"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"uid"</span> <span class="attr">column</span>=<span class="string">"uid"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">column</span>=<span class="string">"username"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">column</span>=<span class="string">"password"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"address"</span> <span class="attr">column</span>=<span class="string">"address"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol start="4">
-<li><p>创建hibernate的核心配置文件<br>注：</p>
-<ol>
-<li>核心配置文件的名称和位置都是固定的。必须在src下面，名称必须为hibernate.cfg.xml</li>
-<li>引入dtd约束</li>
-<li>hibernate操作过程中，只会加载核心配置文件，其他配置文件不会被加载。</li>
-</ol>
-<p>过程：</p>
-<ol>
-<li><p>配置数据库信息<br>查找hibernate.properties.template文件<br>connection.driver_class 驱动名<br>connection.url 数据库路径<br>connection.username 用户名<br>connection.password 密码<br>show_sql 输出sql语句<br>format_sql 对sql语句进行格式化</p>
-</li>
-<li><p>配置hibernate信息<br>show_sql 输出sql语句<br>format_sql 对sql语句进行格式化<br>hbm2ddl.atuo 值update：如果已经有了这个表 则进行更新<br>dialect 配置数据库的方言 让hibernate识别不同数据库的关键字</p>
-</li>
-<li><p>把映射文件放到核心配置文件中<br>mapping标签 属性resource 以src为根目录</p>
-</li>
-</ol>
-<p>示例：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span><span class="meta">?&gt;</span></span>  </span><br><span class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  </span></span><br><span class="line"><span class="meta">"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">hibernate-configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">session-factory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.show_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.format_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.dialect"</span>&gt;</span>dialect.SQLiteDialect<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.driver_class"</span>&gt;</span>org.sqlite.JDBC<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.url"</span>&gt;</span>jdbc:sqlite:Usertest.db<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.username"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.password"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">       </span><br><span class="line">        <span class="tag">&lt;<span class="name">mapping</span> <span class="attr">resource</span>=<span class="string">"com/User.hbm.xml"</span>/&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;/<span class="name">session-factory</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">hibernate-configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>mysql数据库配置文件示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span><span class="meta">?&gt;</span></span>  </span><br><span class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  </span></span><br><span class="line"><span class="meta">"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">hibernate-configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">session-factory</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.driver_class"</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.url"</span>&gt;</span>jdbc:mysql://localhost:3306/hibernatetest<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.username"</span>&gt;</span>root<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connection.password"</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.dialect"</span>&gt;</span>org.hibernate.dialect.MySQL5InnoDBDialect<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.show_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.format_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.hbm2ddl.auto"</span>&gt;</span>update<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapping</span> <span class="attr">resource</span>=<span class="string">"com/User.hbm.xml"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">session-factory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hibernate-configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>注：</p>
-<ul>
-<li>hibernate.hbm2ddl.auto:<br>自动创建|更新|验证数据库表结构。如果不是此方面的需求建议set value=”none”<br>常用属性有create、update</li>
-<li>create：<br>每次加载hibernate时都会删除上一次的生成的表，然后根据你的model类再重新来生成新表，哪怕两次没有任何改变也要这样执行，这就是导致数据库表数据丢失的一个重要原因。</li>
-<li>create-drop ：<br> 每次加载hibernate时根据model类生成表，但是sessionFactory一关闭,表就自动删除。</li>
-<li>update：<br> 最常用的属性，第一次加载hibernate时根据model类会自动建立起表的结构（前提是先建立好数据库），以后加载hibernate时根据model类自动更新表结构，即使表结构改变了但表中的行仍然存在不会删除以前的行。要注意的是当部署到服务器后，表结构是不会被马上建立起来的，是要等应用第一次运行起来后才会。<br>validate ：<br> 每次加载hibernate时，验证创建数据库表结构，只会和数据库中的表进行比较，不会创建新表，但是会插入新值。</li>
-</ul>
-<p> ###代码实现添加操作</p>
-<ol>
-<li>加载hibernate核心配置文件</li>
-<li>创建SessionFactory对象</li>
-<li>使用SessionFactory创建session对象</li>
-<li>开启事务</li>
-<li>写具体逻辑crud操作</li>
-<li>提交事务</li>
-<li><p>关闭资源</p>
-<p>代码示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载hibernate核心配置文件</span></span><br><span class="line"><span class="comment">//会到src下面找hibernate.cfg.xml文件</span></span><br><span class="line"><span class="comment">//在hibernnate里面封装对象</span></span><br><span class="line">Configuration cfg=<span class="keyword">new</span> Configuration();</span><br><span class="line">cfg.configure();</span><br><span class="line"><span class="comment">//创建SessionFactory对象</span></span><br><span class="line"><span class="comment">//读取核心配置文件，创建SessionFactory</span></span><br><span class="line"><span class="comment">//在这个过程中，根据映射关系，在数据库中创建表</span></span><br><span class="line">SessionFactory sf=cfg.buildSessionFactory();</span><br><span class="line"><span class="comment">//创建session对象</span></span><br><span class="line">Session session=sf.openSession();</span><br><span class="line"><span class="comment">//开启事务</span></span><br><span class="line">Transaction tx=session.beginTransaction();</span><br><span class="line"><span class="comment">//进行crud操作</span></span><br><span class="line">User user=<span class="keyword">new</span> User();</span><br><span class="line">user.setUsername(<span class="string">"小陈"</span>);</span><br><span class="line">user.setPassword(<span class="string">"123"</span>);</span><br><span class="line">user.setAddress(<span class="string">"武汉"</span>);</span><br><span class="line"><span class="comment">//调用session里面的方法添加</span></span><br><span class="line">session.save(user);</span><br><span class="line"></span><br><span class="line"><span class="comment">//提交事务</span></span><br><span class="line">tx.commit();</span><br><span class="line"><span class="comment">//关闭资源</span></span><br><span class="line">session.close();</span><br><span class="line">sf.close();</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>注：要解决中文乱码的问题，可以在定义的数据库的url后面添加?useUnicode=true&amp;characterEncoding=utf-8。<br>其中&amp;为&amp;的转义字符。xml中特殊符号要用转义字符。</p>
-
+<p>orm：对象关系映射<br>1.<br>让实体类和数据库表进行一一对应<br>让实体类属性和表里面的字段对应<br>2.不需要直接操作数据库，直接操作实体类对象<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/04/hbnrumen/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/hbnrumen/" data-id="cjhz2ekgx0005h8u3d939oyef" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/hbnrumen/" data-id="cjhz2joav0000a0u37ttpzix4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -310,44 +223,18 @@
 <p>###bean实例化的三种方式</p>
 <ol>
 <li>使用类的无参数构造</li>
-<li><p>使用静态工厂创建<br>创建静态的方法 返回类对象<br>class值为工厂的类 factory-method的值为生成对象的方法<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.Factory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用实例工厂创建<br>创建不是静态的方法 返回类对象<br>先在xml中声明工厂bean，然后声明bean的工厂bean和工厂方法。<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;userFactory&quot; class=&quot;com.Factory&quot; &gt;&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;user&quot; factory-bean=&quot;userFactory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<li>使用静态工厂创建<br>创建静态的方法 返回类对象<br>class值为工厂的类 factory-method的值为生成对象的方法<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.Factory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>###bean中常用的属性</p>
-<ul>
-<li>id</li>
-<li>class</li>
-<li>name 作用类似id 但是可以包含特殊符号</li>
-<li>scope：singleton 单例的 prototype多例的</li>
-</ul>
-<p>#属性注入</p>
-<ol>
-<li><p>使用set方法注入<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.User&quot;&gt;</span><br><span class="line">  &lt;property name=&quot;username&quot; value=&quot;kate&quot;&gt;&lt;/property&gt;</span><br><span class="line">  &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有参数的构造来注入<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.User&quot;&gt;</span><br><span class="line">   &lt;!--使用有参构造方法注入--&gt;</span><br><span class="line">   &lt;constructor-arg name=&quot;username&quot; value=&quot;kally&quot;&gt;&lt;/constructor-arg&gt;</span><br><span class="line">   &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
-<p>##注入对象类型的属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.User&quot;&gt;</span><br><span class="line">&lt;property name=&quot;username&quot; value=&quot;kate&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;server&quot; class=&quot;com.UserServer&quot;&gt;</span><br><span class="line">&lt;property name=&quot;obj&quot; ref=&quot;user&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>##IOC和DI的区别<br>IOC：控制反转，把对象创建交给spring进行配置。<br>DI：依赖注入，向类里面的属性设置值。</p>
-<p>关系：依赖注入不能单独存在，需要在IOC的基础上完成操作。</p>
-<p>##加载项目启动前加载配置文件<br>原理：</p>
-<ol>
-<li>ServletConetext对象</li>
-<li>监听器</li>
-</ol>
-<p>在服务器启动的时候，为每个项目创建一个ServletConext对象，使用监听器，可以监听到ServletContext对象在什么时候创建。<br>当ServletContext对象创建的时候，把配置文件的对象创建。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2018/06/04/beanshilihua/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/beanshilihua/" data-id="cjhz2ekg80000h8u3yimwfrnq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/beanshilihua/" data-id="cjhz2job70002a0u3grfftvot" class="article-share-link">Share</a>
       
       
     </footer>
@@ -395,7 +282,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/spring-AOP/" data-id="cjhz2ekgu0004h8u3nw9ukitt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/spring-AOP/" data-id="cjhz2jobj0004a0u3mgf9y9ob" class="article-share-link">Share</a>
       
       
     </footer>
@@ -446,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjhz2ekh30008h8u38st09lul" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/spring-bean/" data-id="cjhz2jobt0008a0u3ywpcr78k" class="article-share-link">Share</a>
       
       
     </footer>
@@ -488,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/springsomething/" data-id="cjhz2ekh10007h8u35pv3r03k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/09/springsomething/" data-id="cjhz2jobq0007a0u3x7esdzh9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -529,7 +416,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/03/protochain/" data-id="cjhz2ekgz0006h8u3xr9316im" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/03/protochain/" data-id="cjhz2jobg0003a0u3b4n51d2r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -570,7 +457,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/02/php-oop/" data-id="cjhz2ekgp0002h8u3j5ah339r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/02/php-oop/" data-id="cjhz2jobl0005a0u37rwg0own" class="article-share-link">Share</a>
       
       
     </footer>

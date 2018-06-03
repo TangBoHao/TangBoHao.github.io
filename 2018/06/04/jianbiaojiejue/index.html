@@ -7,17 +7,17 @@
   
   <title>hibernate不能自动建表的解决方法 | Tang的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：兼容性模式1&amp;lt;property name=&amp;quot;hibernate.dialect&amp;quot;&amp;gt;org.hibernate">
+  <meta name="description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hibernate不能自动建表的解决方法">
 <meta property="og:url" content="http://yoursite.com/2018/06/04/jianbiaojiejue/index.html">
 <meta property="og:site_name" content="Tang的个人博客">
-<meta property="og:description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：兼容性模式1&amp;lt;property name=&amp;quot;hibernate.dialect&amp;quot;&amp;gt;org.hibernate">
+<meta property="og:description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T16:52:27.171Z">
+<meta property="og:updated_time" content="2018-06-03T16:55:28.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hibernate不能自动建表的解决方法">
-<meta name="twitter:description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：兼容性模式1&amp;lt;property name=&amp;quot;hibernate.dialect&amp;quot;&amp;gt;org.hibernate">
+<meta name="twitter:description" content="##hibernate不能自动建表的解决办法 hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因： 1. ####数据库的方言和数据库的版本不匹配MySQL数据库的方言有以下几种方言：">
   
     <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
   
@@ -89,7 +89,7 @@
         <p>##hibernate不能自动建表的解决办法</p>
 <p>hibernater不能自动建表的原因有很多会报数据表不存在的错误。在网上查了一下，各种说法都有。总结一下，大概有以下几种原因：</p>
 <p>1.</p>
-<p>####数据库的方言和数据库的版本不匹配<br>MySQL数据库的方言有以下几种方言：<br>兼容性模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>####数据库的方言和数据库的版本不匹配<br>MySQL数据库的方言有以下几种方言：<br><a id="more"></a><br>兼容性模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的是5.5一下版本可以使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLInnoDBDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
 <p>Mysql数据库版本是5.5的，设置事务性方言时要修改，就是加一个5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;dialect&quot;&gt;org.hibernate.dialect.MySQL5InnoDBDialect&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
 <p>2.</p>
@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cjhz2ekgs0003h8u3lrptj4a9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cjhz2jobo0006a0u3ccnaoy9o" class="article-share-link">Share</a>
       
       
     </footer>

@@ -7,17 +7,17 @@
   
   <title>Tang的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例： 1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;qu">
+  <meta name="description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例：1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;quo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tang的个人博客">
 <meta property="og:url" content="http://yoursite.com/2018/06/04/beanshilihua/index.html">
 <meta property="og:site_name" content="Tang的个人博客">
-<meta property="og:description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例： 1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;qu">
+<meta property="og:description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例：1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;quo">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T16:23:32.222Z">
+<meta property="og:updated_time" content="2018-06-03T16:56:25.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tang的个人博客">
-<meta name="twitter:description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例： 1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;qu">
+<meta name="twitter:description" content="#bean实例化的方式 ##在spring里面通过配置文件创建对象 ###bean实例化的三种方式  使用类的无参数构造 使用静态工厂创建创建静态的方法 返回类对象class值为工厂的类 factory-method的值为生成对象的方法示例：1&amp;lt;bean id=&amp;quot;user&amp;quot; class=&amp;quot;com.Factory&amp;quot; factory-method=&amp;quo">
   
     <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
   
@@ -81,11 +81,12 @@
 <p>###bean实例化的三种方式</p>
 <ol>
 <li>使用类的无参数构造</li>
-<li><p>使用静态工厂创建<br>创建静态的方法 返回类对象<br>class值为工厂的类 factory-method的值为生成对象的方法<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.Factory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<li>使用静态工厂创建<br>创建静态的方法 返回类对象<br>class值为工厂的类 factory-method的值为生成对象的方法<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;user&quot; class=&quot;com.Factory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>使用实例工厂创建<br>创建不是静态的方法 返回类对象<br>先在xml中声明工厂bean，然后声明bean的工厂bean和工厂方法。<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;userFactory&quot; class=&quot;com.Factory&quot; &gt;&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;user&quot; factory-bean=&quot;userFactory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+</ol>
+<a id="more"></a>
+<ol start="3">
+<li>使用实例工厂创建<br>创建不是静态的方法 返回类对象<br>先在xml中声明工厂bean，然后声明bean的工厂bean和工厂方法。<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;userFactory&quot; class=&quot;com.Factory&quot; &gt;&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;user&quot; factory-bean=&quot;userFactory&quot; factory-method=&quot;getUser&quot;&gt;&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>###bean中常用的属性</p>
@@ -118,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/beanshilihua/" data-id="cjhz2ekg80000h8u3yimwfrnq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/beanshilihua/" data-id="cjhz2job70002a0u3grfftvot" class="article-share-link">Share</a>
       
       
     </footer>
