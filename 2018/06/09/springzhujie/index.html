@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>spring使用注解方式整合web项目 | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##spring整合web项目-注解方式1.加载spring核心配置文件  new对象，效率很低  2.实现思想：把加载配置文件和创建对象的过程，放到服务器启动的时候 3.实现原理  ServlteContext对象 监听器 具体过程 在服务器启动的时候，为每个项目创建一个ServletContext对象 在ServletContext对象创建的时候，使用个监听器，加载spring配置文件，把配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring使用注解方式整合web项目">
+<meta property="og:url" content="http://yoursite.com/2018/06/09/springzhujie/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="##spring整合web项目-注解方式1.加载spring核心配置文件  new对象，效率很低  2.实现思想：把加载配置文件和创建对象的过程，放到服务器启动的时候 3.实现原理  ServlteContext对象 监听器 具体过程 在服务器启动的时候，为每个项目创建一个ServletContext对象 在ServletContext对象创建的时候，使用个监听器，加载spring配置文件，把配置">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-09T07:36:24.499Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring使用注解方式整合web项目">
+<meta name="twitter:description" content="##spring整合web项目-注解方式1.加载spring核心配置文件  new对象，效率很低  2.实现思想：把加载配置文件和创建对象的过程，放到服务器启动的时候 3.实现原理  ServlteContext对象 监听器 具体过程 在服务器启动的时候，为每个项目创建一个ServletContext对象 在ServletContext对象创建的时候，使用个监听器，加载spring配置文件，把配置">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-springzhujie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/09/springzhujie/" class="article-date">
+  <time datetime="2018-06-09T07:35:39.000Z" itemprop="datePublished">2018-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      spring使用注解方式整合web项目
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##spring整合web项目-注解方式<br>1.加载spring核心配置文件</p>
+<ul>
+<li>new对象，效率很低</li>
+</ul>
+<p>2.实现思想：把加载配置文件和创建对象的过程，放到服务器启动的时候</p>
+<p>3.实现原理</p>
+<ul>
+<li>ServlteContext对象</li>
+<li>监听器</li>
+<li>具体过程<ul>
+<li>在服务器启动的时候，为每个项目创建一个ServletContext对象</li>
+<li>在ServletContext对象创建的时候，使用个监听器，加载spring配置文件，把配置文件配置对象创建。</li>
+<li>把创建出来的对象放到ServletContext域对象里面。（setAttribute方法）</li>
+</ul>
+</li>
+</ul>
+<p>##spring中使用注解方式进行bean管理<br>1.注解概念<br>注解：代码中特殊的标记，使用注解可以完成特殊的功能。<br>注解写法：@注解名称(属性名称=属性值)<br>注解可以使用在类上面、方法上面、属性上面。</p>
+<p>2.注解的开发准备</p>
+<ul>
+<li>导入jar包（导入基本jar包、导入一个aop的jar包）</li>
+<li>创建类，创建方法</li>
+<li>创建spring配置文件，引入约束<ul>
+<li>用配置方式管理bean，引入约束beans</li>
+<li>做spring的ioc注解开发，还要引入新的约束</li>
+</ul>
+</li>
+<li>配置开启注解扫描<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;  </span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;  </span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;  </span><br><span class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;  </span><br><span class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;  </span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  </span><br><span class="line">        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  </span><br><span class="line">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd&quot;&gt; </span><br><span class="line">    &lt;!--开启注解扫描，到包里面扫描类、方法、属性上面是否有注解--&gt;</span><br><span class="line">    &lt;context:component-scan base-package=&quot;&#123;写要创建的对象的类的包所在的位置，逗号分隔&#125;&quot;&gt;&lt;/context:component-scan&gt; </span><br><span class="line">	&lt;!--只会扫描属性上面的注解--&gt;</span><br><span class="line">	&lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>3.注解创建对象</p>
+<ul>
+<li><p>在要创建对象的类上面加上注解<br>@Component(value=”xxx”)  作用同于：<bean id="xxx" class="..."></bean></p>
+</li>
+<li><p>创建对象有四个注解，spring提供三个Component的三个衍生注解（目前功能一致，是为了让标注本身的用途清晰）</p>
+<ul>
+<li>Controller    web层</li>
+<li>Service        业务层</li>
+<li>Repository    持久层</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>@Scope(value=””)   //prototype表示多实例，不写表示单实例 </li>
+</ul>
+<p>4.用注解方式注入属性</p>
+<ul>
+<li>在属性上使用注解完成注入<ul>
+<li>@Autowired 根据类自动装配</li>
+<li>@Resource(name=””)  根据value装配 </li>
+</ul>
+</li>
+</ul>
+<p>##配置文件和注解混合使用</p>
+<p>1.创建对象操作使用配置文件方式<br>2.注入属性的操作使用注解方式</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/09/springzhujie/" data-id="cji736uzg000du8u33duvucdd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/04/beanshili/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Spring中bean的实例化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/09/springzhujie/">spring使用注解方式整合web项目</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/beanshili/">Spring中bean的实例化</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/classzhuangzai/">JVM中的类装载器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/neicun/">JVM内存模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/jvmgainian1/">JVM的基本原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
