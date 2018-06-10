@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>pring的aop操作-xml配置实现 | Tang的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##spring的aop操作-xml配置实现 1.在spring里面进行aop操作，使用aspectj实现。  aspectj不是spring的一部分，是一个单独的框架，和spring一起使用进行aop操作 spring2.0以后新增了对aspectj的支持。  2.使用aspectj实现aop有两种方式：xml配置和注解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pring的aop操作-xml配置实现">
+<meta property="og:url" content="http://yoursite.com/2018/06/11/aopxml/index.html">
+<meta property="og:site_name" content="Tang的个人博客">
+<meta property="og:description" content="##spring的aop操作-xml配置实现 1.在spring里面进行aop操作，使用aspectj实现。  aspectj不是spring的一部分，是一个单独的框架，和spring一起使用进行aop操作 spring2.0以后新增了对aspectj的支持。  2.使用aspectj实现aop有两种方式：xml配置和注解。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-10T16:56:22.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pring的aop操作-xml配置实现">
+<meta name="twitter:description" content="##spring的aop操作-xml配置实现 1.在spring里面进行aop操作，使用aspectj实现。  aspectj不是spring的一部分，是一个单独的框架，和spring一起使用进行aop操作 spring2.0以后新增了对aspectj的支持。  2.使用aspectj实现aop有两种方式：xml配置和注解。">
+  
+    <link rel="alternate" href="/atom.xml" title="Tang的个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tang的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-aopxml" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/11/aopxml/" class="article-date">
+  <time datetime="2018-06-10T16:55:35.000Z" itemprop="datePublished">2018-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pring的aop操作-xml配置实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##spring的aop操作-xml配置实现</p>
+<p>1.在spring里面进行aop操作，使用aspectj实现。</p>
+<ul>
+<li>aspectj不是spring的一部分，是一个单独的框架，和spring一起使用进行aop操作</li>
+<li>spring2.0以后新增了对aspectj的支持。</li>
+</ul>
+<p>2.使用aspectj实现aop有两种方式：xml配置和注解。<br><a id="more"></a></p>
+<p>##AOP操作准备<br>1.除了导入基本的jar，还要导入aop相关的jar包。<br>2.创建spring核心配置文件。导入aop的约束。</p>
+<p>###使用表达式配置切入点<br>常用的表达式：</p>
+<ul>
+<li>execution(&lt;访问修饰符&gt;?&lt;返回类型&gt;&lt;方法名&gt;(&lt;参数&gt;)&lt;异常&gt;)<ul>
+<li>exection(*aoptest.Book.add(..))</li>
+<li>exection(<em>aoptest.Book.</em>(..))</li>
+<li>exection(<em> </em>.*(..))</li>
+<li>exection(<em>save</em>(..))</li>
+</ul>
+</li>
+</ul>
+<p>配置文件具体实现：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span>        </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:mvc</span>=<span class="string">"http://www.springframework.org/schema/mvc"</span>     </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tx</span>=<span class="string">"http://www.springframework.org/schema/tx"</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span>  </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>              </span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"                                               </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/beans    </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/beans/spring-beans.xsd    </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/context     </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/context/spring-context.xsd    </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/mvc    </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/mvc/spring-mvc.xsd  </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/tx   </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/tx/spring-tx.xsd  </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/aop  </span></span></span><br><span class="line"><span class="tag"><span class="string">            http://www.springframework.org/schema/aop/spring-aop.xsd "</span>  &gt;</span>  </span><br><span class="line">       <span class="comment">&lt;!--配置对象--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"book"</span> <span class="attr">class</span>=<span class="string">"aoptest.Book"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"mybook"</span> <span class="attr">class</span>=<span class="string">"aoptest.MyBook"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--配置切入点--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">expression</span>=<span class="string">"execution(* aoptest.Book.add(..))"</span> <span class="attr">id</span>=<span class="string">"point1"</span>/&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--配置切面--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"mybook"</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--配置增强类型 method：增强类中哪个方法作为前置--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"before1"</span> <span class="attr">pointcut-ref</span>=<span class="string">"point1"</span>/&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--配置后置通知--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">"after1"</span> <span class="attr">pointcut-ref</span>=<span class="string">"point1"</span>/&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--配置环绕通知--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">"around1"</span> <span class="attr">pointcut-ref</span>=<span class="string">"point1"</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line">            </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>增强类的具体实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> aoptest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBook</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">before1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"前置增强"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">after1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"后置通知"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">around1</span><span class="params">(ProceedingJoinPoint point)</span> <span class="keyword">throws</span> Throwable</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"环绕之前"</span>);</span><br><span class="line">    point.proceed(); <span class="comment">//调用切入点的方法</span></span><br><span class="line">    System.out.println(<span class="string">"环绕之后"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>调用的具体代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> aoptest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">aoptest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="comment">//加载配置文件的方法和使用bean一样</span></span><br><span class="line">    ApplicationContext context=<span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"aopbean.xml"</span>);</span><br><span class="line">    Book book=(Book)context.getBean(<span class="string">"book"</span>);</span><br><span class="line">    book.add();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>增强被执行的先后顺序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">前置增强</span><br><span class="line">环绕之前</span><br><span class="line">add......</span><br><span class="line">环绕之后</span><br><span class="line">后置通知</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/11/aopxml/" data-id="cji92m9hn0000iou3vqx7uksh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/09/springzhujie/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">spring使用注解方式整合web项目</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/11/aopxml/">pring的aop操作-xml配置实现</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/09/springzhujie/">spring使用注解方式整合web项目</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/beanshili/">Spring中bean的实例化</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/classzhuangzai/">JVM中的类装载器</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/04/neicun/">JVM内存模型</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Tang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

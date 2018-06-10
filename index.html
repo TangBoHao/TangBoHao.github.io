@@ -65,6 +65,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-aopxml" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/11/aopxml/" class="article-date">
+  <time datetime="2018-06-10T16:55:35.000Z" itemprop="datePublished">2018-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/11/aopxml/">pring的aop操作-xml配置实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##spring的aop操作-xml配置实现</p>
+<p>1.在spring里面进行aop操作，使用aspectj实现。</p>
+<ul>
+<li>aspectj不是spring的一部分，是一个单独的框架，和spring一起使用进行aop操作</li>
+<li>spring2.0以后新增了对aspectj的支持。</li>
+</ul>
+<p>2.使用aspectj实现aop有两种方式：xml配置和注解。<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/11/aopxml/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/11/aopxml/" data-id="cji92m9hn0000iou3vqx7uksh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-springzhujie" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/09/springzhujie/" class="article-date">
@@ -103,49 +150,15 @@
 </ul>
 </li>
 </ul>
-<p>##spring中使用注解方式进行bean管理<br>1.注解概念<br>注解：代码中特殊的标记，使用注解可以完成特殊的功能。<br>注解写法：@注解名称(属性名称=属性值)<br>注解可以使用在类上面、方法上面、属性上面。</p>
-<p>2.注解的开发准备</p>
-<ul>
-<li>导入jar包（导入基本jar包、导入一个aop的jar包）</li>
-<li>创建类，创建方法</li>
-<li>创建spring配置文件，引入约束<ul>
-<li>用配置方式管理bean，引入约束beans</li>
-<li>做spring的ioc注解开发，还要引入新的约束</li>
-</ul>
-</li>
-<li>配置开启注解扫描<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;  </span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;  </span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;  </span><br><span class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;  </span><br><span class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;  </span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  </span><br><span class="line">        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  </span><br><span class="line">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd&quot;&gt; </span><br><span class="line">    &lt;!--开启注解扫描，到包里面扫描类、方法、属性上面是否有注解--&gt;</span><br><span class="line">    &lt;context:component-scan base-package=&quot;&#123;写要创建的对象的类的包所在的位置，逗号分隔&#125;&quot;&gt;&lt;/context:component-scan&gt; </span><br><span class="line">	&lt;!--只会扫描属性上面的注解--&gt;</span><br><span class="line">	&lt;context:annotation-config&gt;&lt;/context:annotation-config&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>3.注解创建对象</p>
-<ul>
-<li><p>在要创建对象的类上面加上注解<br>@Component(value=”xxx”)  作用同于：<bean id="xxx" class="..."></bean></p>
-</li>
-<li><p>创建对象有四个注解，spring提供三个Component的三个衍生注解（目前功能一致，是为了让标注本身的用途清晰）</p>
-<ul>
-<li>Controller    web层</li>
-<li>Service        业务层</li>
-<li>Repository    持久层</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>@Scope(value=””)   //prototype表示多实例，不写表示单实例 </li>
-</ul>
-<p>4.用注解方式注入属性</p>
-<ul>
-<li>在属性上使用注解完成注入<ul>
-<li>@Autowired 根据类自动装配</li>
-<li>@Resource(name=””)  根据value装配 </li>
-</ul>
-</li>
-</ul>
-<p>##配置文件和注解混合使用</p>
-<p>1.创建对象操作使用配置文件方式<br>2.注入属性的操作使用注解方式</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2018/06/09/springzhujie/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/09/springzhujie/" data-id="cji736uzg000du8u33duvucdd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/09/springzhujie/" data-id="cji92m9i30009iou3sphp0rlf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -193,7 +206,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/beanshili/" data-id="cji736uyv0000u8u3i9azgrsh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/beanshili/" data-id="cji92m9hw0002iou3apfngmqv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -241,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/classzhuangzai/" data-id="cji736uz50004u8u3p28k2xbe" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/classzhuangzai/" data-id="cji92m9hx0003iou3tawvddyf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -288,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/neicun/" data-id="cji736uz80007u8u3p95r7wcf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/neicun/" data-id="cji92m9i20008iou3xgkqjqy1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -330,7 +343,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/jvmgainian1/" data-id="cji736uz60005u8u31hbqm5r2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/jvmgainian1/" data-id="cji92m9i10007iou3a0s0m1gm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -371,7 +384,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/jvmgc/" data-id="cji736uz70006u8u36v6krf9b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/jvmgc/" data-id="cji92m9hz0005iou3urbcshtb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -415,7 +428,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cji736uz00001u8u3n0ecsbmh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/jianbiaojiejue/" data-id="cji92m9i00006iou3xgrnssq2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -468,7 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/hbnpeizhi/" data-id="cji736uz30002u8u3sz1kkpuz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/hbnpeizhi/" data-id="cji92m9hu0001iou34l54xe6f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -512,55 +525,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/04/hbnrumen/" data-id="cji736uz40003u8u3pf7kt57m" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spring-AOP" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/05/09/spring-AOP/" class="article-date">
-  <time datetime="2018-05-09T10:32:13.000Z" itemprop="datePublished">2018-05-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/09/spring-AOP/">spring-AOP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>##AOP概念及实现方式<br>概念：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。</p>
-<p>主要的功能是：</p>
-<ul>
-<li>日志记录</li>
-<li>性能统计</li>
-<li>安全控制</li>
-<li>事务处理</li>
-<li>异常处理等
-        
-          <p class="article-more-link">
-            <a href="/2018/05/09/spring-AOP/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/09/spring-AOP/" data-id="cji736uzd000bu8u3t5lp0t9c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/04/hbnrumen/" data-id="cji92m9hy0004iou3sab2s608" class="article-share-link">Share</a>
       
       
     </footer>
@@ -606,6 +571,10 @@
       <ul>
         
           <li>
+            <a href="/2018/06/11/aopxml/">pring的aop操作-xml配置实现</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/09/springzhujie/">spring使用注解方式整合web项目</a>
           </li>
         
@@ -619,10 +588,6 @@
         
           <li>
             <a href="/2018/06/04/neicun/">JVM内存模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/06/04/jvmgainian1/">JVM的基本原理</a>
           </li>
         
       </ul>
