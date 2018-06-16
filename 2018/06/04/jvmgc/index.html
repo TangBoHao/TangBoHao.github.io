@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Tang的个人博客">
 <meta property="og:description" content="##GC概念Garbage Collection 垃圾收集GC的对象是堆空间和永久区">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T17:14:32.108Z">
+<meta property="og:updated_time" content="2018-06-16T13:04:33.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM中的GC">
 <meta name="twitter:description" content="##GC概念Garbage Collection 垃圾收集GC的对象是堆空间和永久区">
@@ -311,6 +311,14 @@
 <li>很难处理垃圾对象的循环引用</li>
 </ul>
 <p>####标记清除法</p>
+<p>根节点：</p>
+<ul>
+<li>被启动类(bootstrap加载器)加载的类和创建的对象</li>
+<li>JavaStack中引用的对象(栈内存中引用的对象)</li>
+<li>方法区中静态引用指向的对象</li>
+<li>方法区中常量指向的对象</li>
+<li>Native方法中JNI引用的对象</li>
+</ul>
 <p>标记-清除算法时现代垃圾回收算法的思想基础。将垃圾回收分为两个阶段：标记阶段和清除阶段。一种实现：在标记阶段，首先通过根节点，标记所有从根节点开始的可达对象。因此，未被标记的对象就是未被引用的垃圾对象。然后，在清除阶段，清除所有未被标记的对象。</p>
 <p>####标记压缩法<br>标记-压缩法适合用于存活对象较多的场合，如老年代。它在标记-清除法的基础上做了一些优化。和标记清除法一样，它也是先从根节点开始，对所有可达对象做一次标记，但之后，它并不简单的清理未标记的对象，而是将所有的存活对象压缩到内存的一端，之后，清理边界外的所有的空间。</p>
 <p>####复制算法</p>
